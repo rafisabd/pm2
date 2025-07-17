@@ -12,7 +12,7 @@ def get_pm02():
         data = response.json()
         return jsonify({"pm02": data["pm02"]})
     except Exception as e:
-        return jsonify({"error": "pm02 can't be loaded from render"}), 502
+        return jsonify({"error": "pm02 CAN'T be loaded from render"}), 502
 
 if __name__ == '__main__':
     app.run()
