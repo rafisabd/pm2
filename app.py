@@ -46,7 +46,7 @@ def aqi_to_health_level(aqi):
     
 def aqi_to_health_status(aqi):
     if 0 <= aqi <= 50:
-        return "VERY GOOD AQI"
+        return "GOOD"
     elif 51 <= aqi <= 100:
         return "MODERATE"
     elif 101 <= aqi <= 150:
@@ -77,6 +77,7 @@ def get_pm02():
         cigarettes_hour = cigarettes_arr[1]
         
         health_level = aqi_to_health_level(aqi)
+        health_status = aqi_to_health_status(aqi)
         
         return jsonify(
             {
@@ -84,6 +85,7 @@ def get_pm02():
                "cigarettes": cigarettes, 
                "cigarettes_hour": cigarettes_hour , 
                "health_level": health_level,
+               "health_status": health_status,
                "pm02": pm02, 
              })
     except Exception as e:
