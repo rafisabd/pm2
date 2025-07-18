@@ -23,7 +23,7 @@ def pm25_to_aqi(pm25):
     
     return None  # If out of range
 
-def pm25_to_cigarettes(pm25, hours_exposed=8):
+def pm25_to_cigarettes(pm25, hours_exposed=24):
     # 1 cigarette ≈ 22 µg/m³ over 24 hours
     cigarettes = (pm25 * hours_exposed) / (22 * 24)
     return round(cigarettes, 1), hours_exposed
