@@ -102,8 +102,8 @@ def get_purpleair():
         json_data = response.json()
         # Extract the pm2.5 value
         pm25_value = json_data.get("sensor", {}).get("pm2.5", None)
-        print(f"pm25 value: {pm25_value}")
         if pm25_value is not None:
+            print(f"pm25 value: {pm25_value}")
             pm02 = float(pm25_value)
             aqi = pm25_to_aqi(pm02)
             
