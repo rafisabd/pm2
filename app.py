@@ -60,8 +60,8 @@ def aqi_to_health_status(aqi):
     else:
         return "Invalid AQI"
 
-@app.route('/', methods=['GET'])
-def get_pm02():
+@app.route('/airgradient', methods=['GET'])
+def get_airgradient():
     try:
         url = "https://api.airgradient.com/public/api/v1/locations/164620/measures/current?token=90e01a45-09c0-461e-acad-b88ec065e6ab"
         response = requests.get(url, timeout=5)
@@ -90,6 +90,43 @@ def get_pm02():
              })
     except Exception as e:
         return jsonify({"error": "pm02 can't be loaded from api gradient"}), 502
+
+@app.route('/purpleair', methods=['GET'])
+def get_purpleair():
+    headers = {
+        "X-API-Key": API_KEY
+    }
+    response = requests.get(SENSOR_URL, headers=headers)
+
+    if response.status_code == 200:
+        json_data = response.json()
+        # Extract the pm2.5 value
+        pm25_value = json_data.get("sensor", {}).get("pm2.5", None)
+        print(f"pm25 value: {pm25_value}")
+        if pm25_value is not None:
+            pm02 = float(pm25_value)
+            aqi = pm25_to_aqi(pm02)
+            
+            cigarettes_arr = pm25_to_cigarettes(pm02)
+            cigarettes = cigarettes_arr[0]
+            cigarettes_hour = cigarettes_arr[1]
+            
+            health_level = aqi_to_health_level(aqi)
+            health_status = aqi_to_health_status(aqi)
+            
+            return jsonify(
+                {
+                   "aqi": aqi, 
+                   "cigarettes": cigarettes, 
+                   "cigarettes_hour": cigarettes_hour , 
+                   "health_level": health_level,
+                   "health_status": health_status,
+                   "pm02": pm02, 
+                 })
+        else:
+            return jsonify({"error": "pm2.5 value not found in response"}), 404
+    else:
+        return jsonify({"error": "Failed to fetch data", "status_code": response.status_code}), response.status_code
 
 if __name__ == '__main__':
     app.run()
