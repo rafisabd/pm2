@@ -93,11 +93,11 @@ def get_airgradient():
 
 @app.route('/purpleair', methods=['GET'])
 def get_purpleair():
-    API_KEY = "4D0FA1F5-66C5-11F0-AF66-42010A800028"
+    PURPLEAIR_API_KEY = "4D0FA1F5-66C5-11F0-AF66-42010A800028"
     SENSOR_URL = "https://api.purpleair.com/v1/sensors/182137?fields=pm2.5"
     
     headers = {
-        "X-API-Key": API_KEY
+        "X-API-Key": PURPLEAIR_API_KEY
     }
     response = requests.get(SENSOR_URL, headers=headers)
 
